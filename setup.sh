@@ -272,7 +272,7 @@ collect_infrastructure() {
     step "Сбор информации об инфраструктуре (введите значения или Enter для значения по умолчанию)"
 
     echo -e "\n${C_CYN}--- Организация ---${C_RESET}"
-    ask ORG_NAME "Название организации (заголовок приложения)" "${DEF_ORG_NAME:-ФГАУ ЦИТ}"
+    ask ORG_NAME "Название организации (заголовок приложения)" "${DEF_ORG_NAME:-}"
 
     echo -e "\n${C_CYN}--- Active Directory / домен ---${C_RESET}"
     ask AD_HOST "IP-адрес контроллера домена (AD/LDAPS)" "$DEF_AD_HOST"
@@ -590,7 +590,7 @@ else
     # Неинтерактивный режим / значения по умолчанию. Порядок приоритета:
     #   переменная окружения ADRUBY_* > существующий config/infrastructure.yml > дефолт.
     load_existing_conf "$CONF_ABS"
-    ORG_NAME="${ADRUBY_ORG_NAME:-${DEF_ORG_NAME:-ФГАУ ЦИТ}}"
+    ORG_NAME="${ADRUBY_ORG_NAME:-$DEF_ORG_NAME}"
     AD_HOST="${ADRUBY_AD_HOST:-$DEF_AD_HOST}";  AD_PORT="${ADRUBY_AD_PORT:-${DEF_AD_PORT:-636}}"
     AD_BASE="${ADRUBY_AD_BASE:-$DEF_AD_BASE}"
     TERMINATED_OU="${ADRUBY_TERMINATED_OU:-$DEF_TERMINATED_OU}"

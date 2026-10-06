@@ -18,7 +18,7 @@ class AdService
   TERMINATED   = INFRA.dig(:ad, :terminated_ou)
   DOMAIN       = INFRA.dig(:ad, :domain)
   DEFAULT_PWD  = INFRA.dig(:ad, :default_password)
-  ORG_NAME     = INFRA.dig(:organization, :name) || "ФГАУ ЦИТ"
+  ORG_NAME     = INFRA.dig(:organization, :name)
 
   # ---- Editable user attributes (field => LDAP attribute) -------------------
   EDITABLE_ATTRS = {
