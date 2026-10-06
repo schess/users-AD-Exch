@@ -8,7 +8,8 @@ config/credentials.yml.enc
 # Generated infrastructure config (created by setup.sh at deploy time)
 config/infrastructure.yml
 config/infrastructure.yaml
-scripts_for_exchange/infrastructure.yml
+# NOTE: scripts_for_exchange/infrastructure.yml is a TEMPLATE (placeholders) and
+# is intentionally COMMITTED so enable_mailboxes.ps1 has an example to run from.
 
 # Deployment artifacts (created by package.sh)
 *.tar.gz
