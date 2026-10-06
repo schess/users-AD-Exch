@@ -1,0 +1,28 @@
+# Secrets & credentials
+config/master.key
+config/secrets.yml
+config/credentials.yml.enc
+*.key
+.env
+
+# Generated infrastructure config (created by setup.sh at deploy time)
+config/infrastructure.yml
+config/infrastructure.yaml
+scripts_for_exchange/infrastructure.yml
+
+# Deployment artifacts (created by package.sh)
+*.tar.gz
+*.log
+/tmp/*
+/log/*
+!/log/.keep
+vendor/bundle/
+/.bundle/
+
+# Test/helper scripts that may contain credentials (do not publish)
+http_test*.sh
+smoke_test*.rb
+
+# OS / editor
+.DS_Store
+Thumbs.db

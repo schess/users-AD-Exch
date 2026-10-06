@@ -1,0 +1,58 @@
+<div class="card">
+  <h1><%= t("info.title") %></h1>
+  <div class="sub"><%= t("info.sub_details") %></div>
+
+  <table class="details">
+    <tr><td><%= t("users.fio") %></td><td><%= @user[:full_name] %></td></tr>
+    <tr><td><%= t("users.sam") %></td><td><%= @user[:sam] %></td></tr>
+    <tr><td><%= t("users.upn") %></td><td><%= @user[:upn] %></td></tr>
+    <tr><td><%= t("users.title") %></td><td><%= @user[:title].presence || "—" %></td></tr>
+    <tr><td><%= t("users.department") %></td><td><%= @user[:department].presence || "—" %></td></tr>
+    <tr><td><%= t("users.company") %></td><td><%= @user[:company].presence || "—" %></td></tr>
+    <tr><td><%= t("users.office") %></td><td><%= @user[:office].presence || "—" %></td></tr>
+    <tr><td><%= t("users.phone") %></td><td><%= @user[:phone].presence || "—" %></td></tr>
+    <tr><td><%= t("users.mobile") %></td><td><%= @user[:mobile].presence || "—" %></td></tr>
+    <tr><td><%= t("users.manager") %></td><td><%= @user[:manager].presence || "—" %></td></tr>
+    <tr>
+      <td><%= t("users.mailbox") %></td>
+      <td>
+        <% if @user[:mailbox] %>
+          <span style="color:var(--ok);font-weight:600"><%= t("info.mailbox_exchange") %></span>
+        <% else %>
+          <span style="color:#5f6368"><%= t("info.mailbox_none") %></span>
+        <% end %>
+      </td>
+    </tr>
+    <tr><td><%= t("users.email") %></td><td><%= @user[:email].presence || "—" %></td></tr>
+    <tr>
+      <td><%= t("users.aliases") %></td>
+      <td>
+        <% if @user[:aliases].any? %>
+          <%= safe_join(@user[:aliases].map { |a| content_tag(:div, a) }) %>
+        <% else %>
+          —
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td><%= t("users.status") %></td>
+      <td>
+        <% if @user[:disabled] %>
+          <span style="color:var(--danger);font-weight:600"><%= t("users.status_disabled") %></span>
+        <% else %>
+          <span style="color:var(--ok);font-weight:600"><%= t("users.status_active") %></span>
+        <% end %>
+      </td>
+    </tr>
+    <tr><td><%= t("users.ou_short") %></td><td><%= @user[:ou] %></td></tr>
+    <tr><td><%= t("users.created") %></td><td><%= @user[:created].presence || "—" %></td></tr>
+    <tr><td><%= t("users.dn") %></td><td style="font-size:12px"><%= @user[:dn] %></td></tr>
+  </table>
+
+  <div style="display:flex;gap:10px;margin-top:22px">
+    <button type="button" onclick="window.print()" class="btn btn-green" style="flex:1"><%= t("app.print") %></button>
+    <%= link_to t("app.return_menu"), menu_path, class: "btn btn-blue", style: "flex:1;text-align:center" %>
+  </div>
+
+  <p style="margin-top:14px"><%= link_to t("info.find_other"), users_info_path, class: "muted" %></p>
+</div>

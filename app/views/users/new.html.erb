@@ -1,0 +1,74 @@
+<div class="card">
+  <h1><%= t("new.title") %></h1>
+  <div class="sub"><%= t("new.sub") %></div>
+
+  <%= form_tag users_path, method: :post do %>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px">
+      <div>
+        <label><%= t("users.surname") %></label>
+        <%= text_field_tag :surname, @params&.dig(:surname), id: "user_surname" %>
+      </div>
+      <div>
+        <label><%= t("users.name") %></label>
+        <%= text_field_tag :name, @params&.dig(:name), id: "user_name" %>
+      </div>
+      <div>
+        <label><%= t("users.patronymic_initial") %></label>
+        <%= text_field_tag :patronymic, @params&.dig(:patronymic), maxlength: 1 %>
+      </div>
+      <div>
+        <label><%= t("users.username") %></label>
+        <%= text_field_tag :username, @params&.dig(:username), id: "user_username", placeholder: "ivanov.i", autocomplete: "off" %>
+      </div>
+      <div>
+        <label><%= t("users.title") %></label>
+        <%= text_field_tag :title, @params&.dig(:title) %>
+      </div>
+    </div>
+
+    <label><%= t("users.ou") %></label>
+    <select name="ou" id="ou">
+      <option value=""><%= t("new.ou_placeholder") %></option>
+      <% @ous.each do |ou| %>
+        <option value="<%= ou[:dn] %>" <%= params[:ou] == ou[:dn] ? "selected" : "" %>><%= ou[:name] %></option>
+      <% end %>
+    </select>
+
+    <%= submit_tag t("new.submit"), class: "btn btn-green btn-block", style: "margin-top:22px" %>
+  <% end %>
+
+  <p style="margin-top:14px"><%= link_to t("app.back_to_menu"), menu_path, class: "muted" %></p>
+</div>
+
+<script>
+(function () {
+  // Russian -> Latin transliteration (common GOST-style mapping).
+  var TRANSLIT = {
+    'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z',
+    'и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r',
+    'с':'s','т':'t','у':'u','ф':'f','х':'kh','ц':'ts','ч':'ch','ш':'sh',
+    'щ':'shch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya'
+  };
+  function tr(s) {
+    return (s || '').toLowerCase().split('').map(function (ch) {
+      return TRANSLIT[ch] !== undefined ? TRANSLIT[ch] : ch;
+    }).join('');
+  }
+  function buildUsername() {
+    var surname = tr(document.getElementById('user_surname').value).replace(/[^a-z0-9]/g, '');
+    var name = tr(document.getElementById('user_name').value).replace(/[^a-z0-9]/g, '');
+    var first = name.charAt(0);
+    if (surname && name) return first + '.' + surname;
+    if (surname) return surname;
+    return '';
+  }
+  function update() {
+    var el = document.getElementById('user_username');
+    el.value = buildUsername();
+  }
+  var s = document.getElementById('user_surname');
+  var n = document.getElementById('user_name');
+  s.addEventListener('input', update);
+  n.addEventListener('input', update);
+})();
+</script>

@@ -1,0 +1,65 @@
+<div class="card">
+  <h1><%= t("edit.title") %></h1>
+  <div class="sub"><%= t("edit.sub_edit") %></div>
+
+  <table class="details">
+    <tr><td><%= t("users.sam") %></td><td><%= @user[:sam] %></td></tr>
+    <tr><td><%= t("users.upn") %></td><td><%= @user[:upn] %></td></tr>
+    <tr><td><%= t("users.dn") %></td><td style="font-size:12px"><%= @dn %></td></tr>
+  </table>
+
+  <%= form_tag users_edit_confirm_path, method: :post do %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <input type="hidden" name="dn" value="<%= @dn %>">
+
+    <div style="margin-top:16px;font-weight:700"><%= t("edit.person_data") %></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 20px;margin-top:8px">
+      <div>
+        <label><%= t("users.surname") %></label>
+        <%= text_field_tag :surname, @user[:surname] %>
+      </div>
+      <div>
+        <label><%= t("users.name") %></label>
+        <%= text_field_tag :name, @user[:name] %>
+      </div>
+      <div>
+        <label><%= t("users.patronymic") %></label>
+        <%= text_field_tag :patronymic, @user[:patronymic], placeholder: t("edit.patronymic_ph") %>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;font-weight:700"><%= t("edit.work_data") %></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-top:8px">
+      <div>
+        <label><%= t("users.title") %></label>
+        <%= text_field_tag :title, @user[:title] %>
+      </div>
+      <div>
+        <label><%= t("users.department") %></label>
+        <%= text_field_tag :department, @user[:department] %>
+      </div>
+      <div>
+        <label><%= t("users.company") %></label>
+        <%= text_field_tag :company, @user[:company] %>
+      </div>
+      <div>
+        <label><%= t("users.office") %></label>
+        <%= text_field_tag :office, @user[:office] %>
+      </div>
+      <div>
+        <label><%= t("users.phone") %></label>
+        <%= text_field_tag :phone, @user[:phone] %>
+      </div>
+      <div>
+        <label><%= t("users.mobile") %></label>
+        <%= text_field_tag :mobile, @user[:mobile] %>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:24px">
+      <button type="submit" class="btn btn-blue btn-block"><%= t("edit.continue") %></button>
+    </div>
+  <% end %>
+
+  <p style="margin-top:14px"><%= link_to t("edit.choose_other"), users_edit_path, class: "muted" %></p>
+</div>

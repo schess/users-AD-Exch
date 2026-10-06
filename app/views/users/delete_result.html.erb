@@ -1,0 +1,28 @@
+<div class="card">
+  <% if @result && @result[:disable_ok] && @result[:move_ok] %>
+    <h1><%= t("delete.result_ok_title") %></h1>
+    <div class="info"><%= t("delete.result_ok_sub") %></div>
+
+    <table class="details">
+      <tr><td><%= t("users.fio") %></td><td><%= @user[:full_name] %></td></tr>
+      <tr><td><%= t("users.sam") %></td><td><%= @user[:sam] %></td></tr>
+      <tr><td><%= t("users.status") %></td><td><b style="color:var(--danger)"><%= t("users.status_disabled") %></b></td></tr>
+      <tr><td><%= t("users.ou_short") %></td><td><%= AdService::TERMINATED %></td></tr>
+      <tr><td><%= t("users.dn") %></td><td style="font-size:12px"><%= @user[:dn] %></td></tr>
+    </table>
+
+    <div style="display:flex;gap:10px;margin-top:22px">
+      <button type="button" onclick="window.print()" class="btn btn-green" style="flex:1"><%= t("app.print") %></button>
+      <%= link_to t("app.return"), menu_path, class: "btn btn-blue", style: "flex:1;text-align:center" %>
+    </div>
+  <% else %>
+    <h1><%= t("delete.result_err_title") %></h1>
+    <div class="error">
+      <%= t("delete.result_err_text") %>
+      <%= @result ? (@result[:error] || t("delete.result_err_unknown")) : "" %>
+    </div>
+    <div style="margin-top:22px">
+      <%= link_to t("app.return"), menu_path, class: "btn btn-blue btn-block", style: "text-align:center" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,38 @@
+<div class="card">
+  <h1><%= t("edit.result_title") %></h1>
+
+  <% if @result[:success] %>
+    <% if @result[:no_changes] %>
+      <p style="color:#5f6368"><%= t("edit.no_changes") %></p>
+    <% else %>
+      <div class="sub"><%= t("edit.saved") %></div>
+
+      <table class="details" style="margin-top:16px">
+        <tr><td><%= t("users.fio") %></td><td><%= @user[:full_name] %></td></tr>
+        <tr><td><%= t("users.sam") %></td><td><%= @user[:sam] %></td></tr>
+      </table>
+
+      <table class="details" style="margin-top:18px">
+        <tr>
+          <th style="text-align:left"><%= t("edit.field") %></th>
+          <th style="text-align:left"><%= t("edit.was") %></th>
+          <th style="text-align:left"><%= t("edit.now") %></th>
+        </tr>
+        <% @result[:changes].each do |k, v| %>
+          <tr>
+            <td><%= t("users.fields.#{k}") %></td>
+            <td><%= v[:old].presence || "—" %></td>
+            <td><%= v[:new].presence || "—" %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  <% else %>
+    <p style="color:var(--danger)"><%= t("edit.save_error", err: @result[:error]) %></p>
+  <% end %>
+
+  <div style="display:flex;gap:10px;margin-top:22px">
+    <button type="button" onclick="window.print()" class="btn btn-green" style="flex:1"><%= t("app.print") %></button>
+    <%= link_to t("app.return_menu"), menu_path, class: "btn btn-blue", style: "flex:1;text-align:center" %>
+  </div>
+</div>

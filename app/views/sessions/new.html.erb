@@ -1,0 +1,14 @@
+<div class="card">
+  <h1><%= t("sessions.title") %></h1>
+  <div class="sub"><%= t("sessions.sub") %></div>
+
+  <%= form_tag login_path, method: :post do %>
+    <label for="login"><%= t("sessions.login_label") %></label>
+    <%= text_field_tag :login, @login, placeholder: t("sessions.login_placeholder"), autofocus: true %>
+
+    <label for="password"><%= t("sessions.password_label") %></label>
+    <%= password_field_tag :password, nil, placeholder: "••••••••" %>
+
+    <%= submit_tag t("sessions.submit"), class: "btn btn-blue btn-block", style: "margin-top:20px" %>
+  <% end %>
+</div>

@@ -1,0 +1,23 @@
+<div class="card">
+  <h1><%= t("delete.confirm_title") %></h1>
+  <div class="sub"><%= t("delete.confirm_sub") %></div>
+
+  <table class="details">
+    <tr><td><%= t("users.fio") %></td><td><%= @user[:full_name] %></td></tr>
+    <tr><td><%= t("users.sam") %></td><td><%= @user[:sam] %></td></tr>
+    <tr><td><%= t("users.upn") %></td><td><%= @user[:upn] %></td></tr>
+    <tr><td><%= t("users.title") %></td><td><%= @user[:title] %></td></tr>
+    <tr><td><%= t("users.department") %></td><td><%= @user[:department] %></td></tr>
+    <tr><td><%= t("users.ou_short") %></td><td><%= @user[:ou] %></td></tr>
+  </table>
+
+  <p class="muted"><%= raw t("delete.confirm_text") %></p>
+
+  <%= form_tag users_perform_delete_path, method: :post do %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <%= hidden_field_tag :dn, @user[:dn] %>
+    <%= submit_tag t("delete.confirm_btn"), class: "btn btn-red btn-block", style: "font-size:17px;padding:14px" %>
+  <% end %>
+
+  <p style="margin-top:14px"><%= link_to t("app.back"), users_delete_path, class: "muted" %></p>
+</div>

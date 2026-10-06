@@ -1,0 +1,41 @@
+<div class="card">
+  <h1><%= t("edit.confirm_title") %></h1>
+  <div class="sub"><%= t("edit.confirm_sub") %></div>
+
+  <table class="details">
+    <tr><td><%= t("users.fio") %></td><td><%= @user[:full_name] %></td></tr>
+    <tr><td><%= t("users.sam") %></td><td><%= @user[:sam] %></td></tr>
+  </table>
+
+  <% if @changes.any? %>
+    <table class="details" style="margin-top:18px">
+      <tr>
+        <th style="text-align:left"><%= t("edit.field") %></th>
+        <th style="text-align:left"><%= t("edit.was") %></th>
+        <th style="text-align:left"><%= t("edit.will") %></th>
+      </tr>
+      <% @changes.each do |k, v| %>
+        <tr>
+          <td><%= t("users.fields.#{k}") %></td>
+          <td><%= v[:old].presence || "—" %></td>
+          <td><%= v[:new].presence || "—" %></td>
+        </tr>
+      <% end %>
+    </table>
+
+    <%= form_tag users_perform_edit_path, method: :post do %>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <input type="hidden" name="dn" value="<%= @dn %>">
+      <% @attrs.each do |k, v| %>
+        <input type="hidden" name="<%= k %>" value="<%= v %>">
+      <% end %>
+
+      <div style="display:flex;gap:10px;margin-top:22px">
+        <button type="submit" class="btn btn-green btn-block"><%= t("edit.confirm_btn") %></button>
+      </div>
+    <% end %>
+  <% else %>
+    <p style="margin-top:16px;color:#5f6368"><%= t("edit.no_changes") %></p>
+    <p style="margin-top:14px"><%= link_to t("edit.back_edit"), users_edit_path, class: "muted" %></p>
+  <% end %>
+</div>

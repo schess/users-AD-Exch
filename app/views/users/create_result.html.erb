@@ -1,0 +1,41 @@
+<div class="card">
+  <h1><%= t("create.result_title") %></h1>
+  <div class="info"><%= t("create.result_sub") %></div>
+
+  <table class="details">
+    <tr><td><%= t("users.fio") %></td><td><%= @created[:full_name] %></td></tr>
+    <tr><td><%= t("users.username_short") %></td><td><%= @created[:username] %></td></tr>
+    <tr><td><%= t("users.sam") %></td><td><%= @created[:sam] %></td></tr>
+    <tr><td><%= t("users.upn") %></td><td><%= @created[:upn] %></td></tr>
+    <tr><td><%= t("users.title") %></td><td><%= @created[:title] %></td></tr>
+    <tr><td><%= t("users.department") %></td><td><%= @created[:department] %></td></tr>
+    <tr><td><%= t("users.password") %></td><td><code><%= @created[:password] %></code></td></tr>
+    <tr><td><%= t("users.domain") %></td><td><%= @created[:domain] %></td></tr>
+    <tr><td><%= t("users.change_pwd") %></td><td><b><%= t("create.pwd_change") %></b></td></tr>
+    <% if @created[:email].present? %>
+      <tr><td><%= t("users.email_ex") %></td><td style="font-size:12px"><%= @created[:email] %></td></tr>
+      <tr>
+        <td><%= t("users.mailbox") %></td>
+        <td>
+          <% mb = @created[:mailbox] %>
+          <% if mb && mb[:pending] %>
+            <span style="color:#1565c0"><b><%= t("create.mail_auto") %></b></span>
+            <span style="font-size:12px;color:#555"><br/><%= t("create.mail_auto_note") %></span>
+          <% elsif mb && mb[:success] %>
+            <span style="color:#2e7d32"><b><%= t("create.mail_created") %></b></span>
+          <% else %>
+            <span style="color:#c62828"><b><%= t("create.mail_error") %></b></span>
+            <span style="font-size:12px"><%= mb ? mb[:error] : t("create.mail_none") %></span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    <tr><td><%= t("users.ou") %></td><td style="font-size:12px"><%= @created[:ou] %></td></tr>
+    <tr><td><%= t("users.dn") %></td><td style="font-size:12px"><%= @created[:dn] %></td></tr>
+  </table>
+
+  <div style="display:flex;gap:10px;margin-top:22px">
+    <button type="button" onclick="window.print()" class="btn btn-green" style="flex:1"><%= t("app.print") %></button>
+    <%= link_to t("app.return"), menu_path, class: "btn btn-blue", style: "flex:1;text-align:center" %>
+  </div>
+</div>

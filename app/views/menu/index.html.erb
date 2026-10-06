@@ -1,0 +1,26 @@
+<div class="card">
+  <h1><%= t("menu.title") %></h1>
+  <div class="sub"><%= t("menu.sub") %></div>
+
+  <div class="menu-grid">
+    <%= link_to users_new_path, class: "menu-card" do %>
+      <div style="font-size:40px">➕</div>
+      <div style="font-weight:700;margin-top:8px"><%= t("menu.add") %></div>
+    <% end %>
+
+    <%= link_to users_delete_path, class: "menu-card" do %>
+      <div style="font-size:40px">➖</div>
+      <div style="font-weight:700;margin-top:8px"><%= t("menu.delete") %></div>
+    <% end %>
+
+    <%= link_to users_info_path, class: "menu-card" do %>
+      <div style="font-size:40px">🔍</div>
+      <div style="font-weight:700;margin-top:8px"><%= t("menu.info") %></div>
+    <% end %>
+
+    <%= link_to users_edit_path, class: "menu-card" do %>
+      <div style="font-size:40px">✏️</div>
+      <div style="font-weight:700;margin-top:8px"><%= t("menu.edit") %></div>
+    <% end %>
+  </div>
+</div>

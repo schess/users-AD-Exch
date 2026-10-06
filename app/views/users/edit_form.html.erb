@@ -1,0 +1,62 @@
+<div class="card">
+  <h1><%= t("edit.title") %></h1>
+  <div class="sub"><%= t("edit.sub") %></div>
+
+  <label for="q"><%= t("edit.q_label") %></label>
+  <div class="autocomplete">
+    <input type="text" id="q" name="q" placeholder="<%= t("edit.q_ph") %>" autocomplete="off">
+    <div class="suggestions" id="suggestions" style="display:none"></div>
+  </div>
+
+  <form id="selform" method="post" action="<%= users_edit_path %>" style="margin-top:20px">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <input type="hidden" name="dn" id="dn">
+    <button type="submit" class="btn btn-blue btn-block" id="go" disabled><%= t("edit.save_btn") %></button>
+  </form>
+
+  <p style="margin-top:14px"><%= link_to t("app.back_to_menu"), menu_path, class: "muted" %></p>
+</div>
+
+<script>
+(function(){
+  var q = document.getElementById('q');
+  var sug = document.getElementById('suggestions');
+  var dn = document.getElementById('dn');
+  var go = document.getElementById('go');
+  var timer = null;
+  var items = [];
+
+  q.addEventListener('input', function(){
+    clearTimeout(timer);
+    timer = setTimeout(function(){ search(q.value); }, 250);
+  });
+
+  function search(query){
+    if(!query.trim()){ sug.style.display='none'; return; }
+    fetch('<%= users_autocomplete_path %>?q=' + encodeURIComponent(query))
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        items = data;
+        sug.innerHTML = '';
+        if(!data.length){ sug.style.display='none'; return; }
+        data.forEach(function(u){
+          var d = document.createElement('div');
+          d.innerHTML = '<div class="lbl">' + esc(u.name) + '</div>' +
+                        '<div class="meta">' + esc(u.login) + '</div>';
+          d.addEventListener('click', function(){ select(u); });
+          sug.appendChild(d);
+        });
+        sug.style.display = 'block';
+      });
+  }
+
+  function select(u){
+    q.value = u.name;
+    dn.value = u.dn;
+    go.disabled = false;
+    sug.style.display = 'none';
+  }
+
+  function esc(s){ return (s||'').replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+})();
+</script>

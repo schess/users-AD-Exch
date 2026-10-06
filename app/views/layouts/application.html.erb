@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= t("layout.title", org: AdService::ORG_NAME) %></title>
+  <style>
+    :root{
+      --brand:#1a73e8; --ok:#188038; --danger:#d93025; --bg:#f0f2f5; --card:#ffffff;
+    }
+    *{box-sizing:border-box}
+    body{font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);margin:0;color:#202124}
+    .wrap{max-width:720px;margin:40px auto;padding:0 16px}
+    .card{background:var(--card);border:1px solid #dadce0;border-radius:10px;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+    h1{font-size:22px;margin:0 0 6px}
+    .sub{color:#5f6368;margin-bottom:20px}
+    label{display:block;font-weight:600;margin:14px 0 6px}
+    input[type=text],input[type=password],input[type=search],select{width:100%;padding:10px 12px;border:1px solid #dadce0;border-radius:8px;font-size:15px}
+    input:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 2px rgba(26,115,232,.2)}
+    .btn{display:inline-block;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600;padding:12px 20px;text-decoration:none;color:#fff}
+    .btn-block{display:block;width:100%;margin-top:8px}
+    .btn-blue{background:var(--brand)}
+    .btn-green{background:var(--ok)}
+    .btn-red{background:var(--danger)}
+    .btn-red:hover{filter:brightness(.92)}
+    .btn-gray{background:#5f6368}
+    .btn-outline{background:#fff;color:var(--brand);border:1px solid var(--brand)}
+    .btn + .btn{margin-left:10px}
+    .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+    .menu-card{border:1px solid #dadce0;border-radius:10px;padding:28px;text-align:center;background:#fff;text-decoration:none}
+    .menu-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.12)}
+    .error{background:#fce8e6;color:#d93025;border:1px solid #f5c6c2;border-radius:8px;padding:12px 14px;margin:16px 0;font-size:14px}
+    .info{background:#e8f0fe;color:var(--brand);border:1px solid #c9dbf8;border-radius:8px;padding:12px 14px;margin:16px 0;font-size:14px}
+    table.details{width:100%;border-collapse:collapse;margin:16px 0}
+    table.details td{border:1px solid #dadce0;padding:10px 12px;font-size:15px}
+    table.details td:first-child{font-weight:600;background:#f8f9fa;width:34%}
+    .topbar{background:#fff;border-bottom:1px solid #dadce0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+    .topbar .title{font-weight:700}
+    .muted{color:#5f6368;font-size:13px}
+    .flag{width:20px;height:14px;border:1px solid #dadce0;border-radius:2px;vertical-align:middle}
+    .lang-dd{position:relative;display:inline-block}
+    .lang-dd-toggle{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #dadce0;border-radius:8px;padding:5px 8px;font-size:13px;cursor:pointer;color:#202124;font-family:inherit}
+    .lang-dd-toggle:hover{border-color:var(--brand)}
+    .lang-name{white-space:nowrap}
+    .caret{font-size:9px;color:#5f6368;margin-left:2px}
+    .lang-dd-menu{position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #dadce0;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:20;min-width:160px;padding:4px}
+    .lang-dd-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:none;padding:7px 8px;font-size:13px;cursor:pointer;color:#202124;font-family:inherit;border-radius:6px}
+    .lang-dd-item:hover{background:#e8f0fe}
+    .lang-dd-item.selected{font-weight:600;background:#e8f0fe}
+    .lang-dd-item.selected .flag{border-color:var(--brand)}
+    .autocomplete{position:relative}
+    .suggestions{position:absolute;z-index:10;background:#fff;border:1px solid #dadce0;border-radius:8px;width:100%;max-height:260px;overflow:auto;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+    .suggestions div{padding:10px 12px;cursor:pointer}
+    .suggestions div:hover{background:#e8f0fe}
+    .suggestions .lbl{font-weight:600}
+    .suggestions .meta{font-size:12px;color:#5f6368}
+    @media print{
+      .topbar,.btn,.menu-grid{display:none!important}
+      body{background:#fff}
+      .wrap{max-width:100%;margin:0;padding:0}
+      .card{border:none;box-shadow:none;padding:0}
+      .card h1{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="title"><%= t("layout.topbar_title", org: AdService::ORG_NAME) %></div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <% if current_login.present? %>
+        <span class="muted"><%= current_login %></span>
+      <% end %>
+      <%
+        flags = {
+          "ru" => '<svg class="flag" viewBox="0 0 21 14"><rect width="21" height="14" fill="#fff"/><rect y="4.7" width="21" height="4.7" fill="#0039a6"/><rect y="9.3" width="21" height="4.7" fill="#d52b1e"/></svg>',
+          "en" => '<svg class="flag" viewBox="0 0 21 14"><rect width="21" height="14" fill="#012169"/><path d="M0 0l10.5 7L0 14zM21 0L10.5 7 21 14z" fill="#fff"/><path d="M0 0l10.5 7L0 14zM21 0L10.5 7 21 14z" fill="#c8102e" stroke="#fff" stroke-width="1.6"/><path d="M10.5 0v14M0 7h21" stroke="#fff" stroke-width="7"/><path d="M10.5 0v14M0 7h21" stroke="#c8102e" stroke-width="4.6"/></svg>',
+          "de" => '<svg class="flag" viewBox="0 0 21 14"><rect width="21" height="14" fill="#000"/><rect y="4.7" width="21" height="4.7" fill="#dd0000"/><rect y="9.3" width="21" height="4.7" fill="#ffce00"/></svg>',
+          "fr" => '<svg class="flag" viewBox="0 0 21 14"><rect width="7" height="14" fill="#0055a4"/><rect x="7" width="7" height="14" fill="#fff"/><rect x="14" width="7" height="14" fill="#ef4135"/></svg>'
+        }
+        names = { "ru" => "Русский", "en" => "English", "de" => "Deutsch", "fr" => "Français" }
+        cur = I18n.locale.to_s
+        cur = "ru" unless names.key?(cur)
+      %>
+      <form method="post" action="<%= set_locale_path %>" id="lang-form" style="display:none">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input type="hidden" name="locale" id="lang-locale-input" value="<%= cur %>">
+      </form>
+      <div class="lang-dd" id="lang-dd">
+        <button type="button" class="lang-dd-toggle" onclick="toggleLang(this)" aria-haspopup="true" aria-expanded="false" aria-label="Select language">
+          <%== flags[cur] %><span class="lang-name"><%= names[cur] %></span><span class="caret">▾</span>
+        </button>
+        <div class="lang-dd-menu" id="lang-dd-menu" role="menu" hidden>
+          <% names.each do |code, name| %>
+            <button type="button" class="lang-dd-item<%= code == cur ? " selected" : "" %>" data-locale="<%= code %>" onclick="setLang('<%= code %>')" role="menuitem">
+              <%== flags[code] %><span><%= name %></span>
+            </button>
+          <% end %>
+        </div>
+      </div>
+      <% if current_login.present? %>
+        <%= link_to t("layout.logout"), logout_path, method: :post, style: "color:var(--brand);text-decoration:none;font-size:13px" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <% if flash[:notice].present? %><div class="info"><%= flash[:notice] %></div><% end %>
+    <% if flash[:alert].present? %><div class="error"><%= flash[:alert] %></div><% end %>
+    <% if flash[:error].present? %><div class="error"><%= flash[:error] %></div><% end %>
+    <% if defined?(@error) && @error.present? %><div class="error"><%= @error %></div><% end %>
+    <%= yield %>
+  </div>
+
+  <script>
+    function toggleLang(btn){
+      var menu=document.getElementById('lang-dd-menu');
+      var wasHidden=menu.hidden;
+      menu.hidden=!wasHidden;
+      btn.setAttribute('aria-expanded', wasHidden?'true':'false');
+    }
+    function setLang(code){
+      document.getElementById('lang-locale-input').value=code;
+      document.getElementById('lang-form').submit();
+    }
+    document.addEventListener('click', function(e){
+      var dd=document.getElementById('lang-dd');
+      if(dd && !dd.contains(e.target)){
+        var menu=document.getElementById('lang-dd-menu');
+        var btn=document.querySelector('.lang-dd-toggle');
+        if(menu && !menu.hidden){
+          menu.hidden=true;
+          if(btn) btn.setAttribute('aria-expanded','false');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
